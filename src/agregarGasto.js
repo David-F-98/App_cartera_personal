@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 const formulario = document.querySelector('#formulario-gasto form');
 //Accedemos al id=descripcion mediante esta otra manera
 const descripcion = formulario.descripcion;
@@ -77,7 +78,7 @@ formulario.addEventListener('submit',(e)=>{
     if(comprobarDescripcion() && comprobarPrecio()){
         //Creamos un objeto donde vamos a guadar los diferentes gastos
         const nuevoGasto = {
-            id: '1',
+            id: uuidv4(),
             fecha: new Date(),
             descripcion: descripcion.value,
             precio: precio.value

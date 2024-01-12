@@ -12,7 +12,10 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@rollup/plugin-node-resolve": "^15.2.3",
 		"rollup": "^2.77.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"uuid": "^9.0.1"
+	}
 }
