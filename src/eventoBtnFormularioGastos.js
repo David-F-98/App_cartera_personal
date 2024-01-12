@@ -19,3 +19,5 @@ botonFormulario.addEventListener('click',(e)=>{
         abrirFormularioDesdeGastos();
     };
 });;
+
+export {cerrarFormularioDesdeGastos, abrirFormularioDesdeGastos};

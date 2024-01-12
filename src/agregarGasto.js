@@ -1,3 +1,5 @@
+import cargarGastos from './cargarGastos';
+import { cerrarFormularioDesdeGastos } from './eventoBtnFormularioGastos';
 import { v4 as uuidv4 } from 'uuid';
 const formulario = document.querySelector('#formulario-gasto form');
 //Accedemos al id=descripcion mediante esta otra manera
@@ -94,6 +96,12 @@ formulario.addEventListener('submit',(e)=>{
             //Si tiene, creamos una nueva lista de gastos
             const nuevaListaGastos =  [...gastosGuardados,nuevoGasto];
             window.localStorage.setItem('gastos', JSON.stringify(nuevaListaGastos));
-        }
+        };
+
+
+        descripcion.value = '';
+        precio.value='';
+        cargarGastos();
+        cerrarFormularioDesdeGastos();
     };
 });
