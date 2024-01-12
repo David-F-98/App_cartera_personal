@@ -16,6 +16,7 @@
 		"rollup": "^2.77.2"
 	},
 	"dependencies": {
+		"date-fns": "^3.2.0",
 		"uuid": "^9.0.1"
 	}
 }

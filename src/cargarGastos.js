@@ -1,3 +1,7 @@
+import format from 'date-fns/format';
+import parseISO from 'date-fns/parseISO';
+import { es } from 'date-fns/locale';
+
 const contenedorGastos = document.querySelector('#gastos .gastos__lista');
 const cargarGastos = ()=>{
     const gastos = JSON.parse(window.localStorage.getItem('gastos'));
@@ -5,16 +9,18 @@ const cargarGastos = ()=>{
         document.querySelector('#gastos .gastos__mensaje').classList.remove('gastos__mensaje--active');
         contenedorGastos.innerHTML = '';
 
+        const formatoMoneda = new Intl.NumberFormat('en-CO', {style: 'currency', currency: 'COP'});
+
         gastos.forEach((gasto) => {
-            console.log(gasto);
+            const precio = formatoMoneda.format(gasto.precio);
             contenedorGastos.innerHTML += `
                 <div class="gasto" data-id="${gasto.id}">
                     <div class="gasto__info">
                         <div>
                             <p class="gasto__nombre">${gasto.descripcion}</p>
-                            <p class="gasto__cantidad">$${gasto.precio}</p>
+                            <p class="gasto__cantidad">${precio}</p>
                         </div>
-                        <p class="gasto__fecha">${gasto.fecha}</p>
+                        <p class="gasto__fecha">${format(parseISO(gasto.fecha),"d 'de' MMMM 'de' yyyy", {locale: es})}</p>
                     </div>
                     <div class="gasto__acciones">
                         <button class="gasto__btn" data-accion="editar-gasto">
