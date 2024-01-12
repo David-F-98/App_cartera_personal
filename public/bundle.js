@@ -92,4 +92,28 @@ const  validacionAlTeclearPre =   [...e.target.classList].includes('formulario-g
         comprobarPrecio();
     }
 });
+
+formulario.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    if(comprobarDescripcion() && comprobarPrecio()){
+        //Creamos un objeto donde vamos a guadar los diferentes gastos
+        const nuevoGasto = {
+            id: '1',
+            fecha: new Date(),
+            descripcion: descripcion.value,
+            precio: precio.value
+        };
+
+        const gastosGuardados = JSON.parse(window.localStorage.getItem('gastos'));
+        
+        //Comprobamos si hay gastos 
+        if(!gastosGuardados){
+            //Si NO tiene, creamos la primera lista de gastos
+            window.localStorage.setItem('gastos',JSON.stringify([{...nuevoGasto}]));
+        } else {
+            //Si tiene, creamos una nueva lista de gastos
+            const nuevaListaGastos =  [...gastosGuardados,nuevoGasto];
+            window.localStorage.setItem('gastos', JSON.stringify(nuevaListaGastos));
+        }
+    }});
 //# sourceMappingURL=bundle.js.map
