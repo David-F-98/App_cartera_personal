@@ -3619,7 +3619,7 @@ function isThisMonth(date) {
   return isSameMonth(Date.now(), date);
 }
 
-const contenedorGastos = document.querySelector('#gastos .gastos__lista');
+const contenedorGastos$1 = document.querySelector('#gastos .gastos__lista');
 const cargarGastos = ()=>{
     const gastos = JSON.parse(window.localStorage.getItem('gastos'));
     if(gastos && gastos.length > 0){
@@ -3633,14 +3633,14 @@ const cargarGastos = ()=>{
 
 
         document.querySelector('#gastos .gastos__mensaje').classList.remove('gastos__mensaje--active');
-        contenedorGastos.innerHTML = '';
+        contenedorGastos$1.innerHTML = '';
 
         const formatoMoneda = new Intl.NumberFormat('en-CO', {style: 'currency', currency: 'COP'});
 
 
         gastosDelMes.forEach((gasto) => {
             const precio = formatoMoneda.format(gasto.precio);
-            contenedorGastos.innerHTML += `
+            contenedorGastos$1.innerHTML += `
                 <div class="gasto" data-id="${gasto.id}">
                     <div class="gasto__info">
                         <div>
@@ -3689,7 +3689,7 @@ const cargarGastos = ()=>{
             `;
         });
     }else {
-        contenedorGastos.innerHTML = '';
+        contenedorGastos$1.innerHTML = '';
         document.querySelector('#gastos .gastos__mensaje').classList.add('gastos__mensaje--active');
     }
 };
@@ -3880,6 +3880,28 @@ formulario.addEventListener('submit',(e)=>{
         cerrarFormularioDesdeGastos();
         cargarTotalGastado();
     }});
+
+const contenedorGastos = document.getElementById('gastos');
+
+contenedorGastos.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const gasto = e.target.closest('.gasto');
+    if(gasto){
+        if(gasto.scrollLeft > 0){
+            gasto.querySelector('.gasto__info').scrollIntoView({
+                behavior: 'smooth',
+                inline: 'start',
+                block: 'nearest'
+            });    
+        } else {
+            gasto.querySelector('.gasto__acciones').scrollIntoView({
+                behavior: 'smooth',
+                inline: 'start',
+                block: 'nearest'
+            });
+
+        }    }
+});
 
 cargarGastos();
 cargarTotalGastado();
