@@ -1,3 +1,4 @@
+import { parse } from 'date-fns';
 import cargarGastos from './cargarGastos';
 import cargarTotalGastado from './cargarTotalGastado';
 import { cerrarFormularioDesdeGastos } from './eventoBtnFormularioGastos';
@@ -78,6 +79,9 @@ const  validacionAlTeclearPre =   [...e.target.classList].includes('formulario-g
 
 formulario.addEventListener('submit',(e)=>{
     e.preventDefault();
+    
+    const modo = formulario.closest('#formulario-gasto')?.dataset?.modo;
+    
     if(comprobarDescripcion() && comprobarPrecio()){
         //Creamos un objeto donde vamos a guadar los diferentes gastos
         const nuevoGasto = {
@@ -89,15 +93,41 @@ formulario.addEventListener('submit',(e)=>{
 
         const gastosGuardados = JSON.parse(window.localStorage.getItem('gastos'));
         
-        //Comprobamos si hay gastos 
-        if(!gastosGuardados){
-            //Si NO tiene, creamos la primera lista de gastos
-            window.localStorage.setItem('gastos',JSON.stringify([{...nuevoGasto}]));
-        } else{
-            //Si tiene, creamos una nueva lista de gastos
-            const nuevaListaGastos =  [...gastosGuardados,nuevoGasto];
-            window.localStorage.setItem('gastos', JSON.stringify(nuevaListaGastos));
+
+        if(modo === 'agregarGasto'){
+            //Comprobamos si hay gastos 
+            if(!gastosGuardados){
+                //Si NO tiene, creamos la primera lista de gastos
+                window.localStorage.setItem('gastos',JSON.stringify([{...nuevoGasto}]));
+            } else{
+                //Si tiene, creamos una nueva lista de gastos
+                const nuevaListaGastos =  [...gastosGuardados,nuevoGasto];
+                window.localStorage.setItem('gastos', JSON.stringify(nuevaListaGastos));
+            };
+        } else if(modo === 'editarGasto') {
+            const id = document.getElementById('formulario-gasto').dataset?.id;
+
+            let indexGastoAEditar;
+
+            if(id && gastosGuardados){
+                gastosGuardados.forEach((gasto, index) => {
+                    if(id === gasto.id){
+                        indexGastoAEditar = index;
+                    }
+                });
+            };
+
+            const nuevosGastos = [...gastosGuardados];
+            nuevosGastos[indexGastoAEditar] = {
+                ...gastosGuardados[indexGastoAEditar],
+                descripcion: descripcion.value,
+                precio: precio.value
+            };
+
+            window.localStorage.setItem('gastos', JSON.stringify(nuevosGastos));
         };
+
+
 
 
         descripcion.value = '';
@@ -106,4 +136,6 @@ formulario.addEventListener('submit',(e)=>{
         cerrarFormularioDesdeGastos();
         cargarTotalGastado();
     };
+
+
 });
