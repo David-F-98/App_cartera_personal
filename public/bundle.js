@@ -3560,16 +3560,85 @@ const es = {
   },
 };
 
+/**
+ * @name isSameMonth
+ * @category Month Helpers
+ * @summary Are the given dates in the same month (and year)?
+ *
+ * @description
+ * Are the given dates in the same month (and year)?
+ *
+ * @typeParam DateType - The `Date` type, the function operates on. Gets inferred from passed arguments. Allows to use extensions like [`UTCDate`](https://github.com/date-fns/utc).
+ *
+ * @param dateLeft - The first date to check
+ * @param dateRight - The second date to check
+ *
+ * @returns The dates are in the same month (and year)
+ *
+ * @example
+ * // Are 2 September 2014 and 25 September 2014 in the same month?
+ * const result = isSameMonth(new Date(2014, 8, 2), new Date(2014, 8, 25))
+ * //=> true
+ *
+ * @example
+ * // Are 2 September 2014 and 25 September 2015 in the same month?
+ * const result = isSameMonth(new Date(2014, 8, 2), new Date(2015, 8, 25))
+ * //=> false
+ */
+function isSameMonth(dateLeft, dateRight) {
+  const _dateLeft = toDate(dateLeft);
+  const _dateRight = toDate(dateRight);
+  return (
+    _dateLeft.getFullYear() === _dateRight.getFullYear() &&
+    _dateLeft.getMonth() === _dateRight.getMonth()
+  );
+}
+
+/**
+ * @name isThisMonth
+ * @category Month Helpers
+ * @summary Is the given date in the same month as the current date?
+ * @pure false
+ *
+ * @description
+ * Is the given date in the same month as the current date?
+ *
+ * @typeParam DateType - The `Date` type, the function operates on. Gets inferred from passed arguments. Allows to use extensions like [`UTCDate`](https://github.com/date-fns/utc).
+ *
+ * @param date - The date to check
+ *
+ * @returns The date is in this month
+ *
+ * @example
+ * // If today is 25 September 2014, is 15 September 2014 in this month?
+ * const result = isThisMonth(new Date(2014, 8, 15))
+ * //=> true
+ */
+
+function isThisMonth(date) {
+  return isSameMonth(Date.now(), date);
+}
+
 const contenedorGastos = document.querySelector('#gastos .gastos__lista');
 const cargarGastos = ()=>{
     const gastos = JSON.parse(window.localStorage.getItem('gastos'));
     if(gastos && gastos.length > 0){
+
+        const gastosDelMes = gastos.filter((gasto)=>{
+            if(isThisMonth(parseISO(gasto.fecha))){
+
+                return gasto;
+            }
+        });
+
+
         document.querySelector('#gastos .gastos__mensaje').classList.remove('gastos__mensaje--active');
         contenedorGastos.innerHTML = '';
 
         const formatoMoneda = new Intl.NumberFormat('en-CO', {style: 'currency', currency: 'COP'});
 
-        gastos.forEach((gasto) => {
+
+        gastosDelMes.forEach((gasto) => {
             const precio = formatoMoneda.format(gasto.precio);
             contenedorGastos.innerHTML += `
                 <div class="gasto" data-id="${gasto.id}">

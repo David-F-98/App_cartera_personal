@@ -1,17 +1,28 @@
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import { es } from 'date-fns/locale';
+import isThisMonth from 'date-fns/isThisMonth';
 
 const contenedorGastos = document.querySelector('#gastos .gastos__lista');
 const cargarGastos = ()=>{
     const gastos = JSON.parse(window.localStorage.getItem('gastos'));
     if(gastos && gastos.length > 0){
+
+        const gastosDelMes = gastos.filter((gasto)=>{
+            if(isThisMonth(parseISO(gasto.fecha))){
+
+                return gasto;
+            }
+        });
+
+
         document.querySelector('#gastos .gastos__mensaje').classList.remove('gastos__mensaje--active');
         contenedorGastos.innerHTML = '';
 
         const formatoMoneda = new Intl.NumberFormat('en-CO', {style: 'currency', currency: 'COP'});
 
-        gastos.forEach((gasto) => {
+
+        gastosDelMes.forEach((gasto) => {
             const precio = formatoMoneda.format(gasto.precio);
             contenedorGastos.innerHTML += `
                 <div class="gasto" data-id="${gasto.id}">
