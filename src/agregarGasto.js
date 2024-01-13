@@ -1,4 +1,5 @@
 import cargarGastos from './cargarGastos';
+import cargarTotalGastado from './cargarTotalGastado';
 import { cerrarFormularioDesdeGastos } from './eventoBtnFormularioGastos';
 import { v4 as uuidv4 } from 'uuid';
 const formulario = document.querySelector('#formulario-gasto form');
@@ -103,5 +104,6 @@ formulario.addEventListener('submit',(e)=>{
         precio.value='';
         cargarGastos();
         cerrarFormularioDesdeGastos();
+        cargarTotalGastado();
     };
 });

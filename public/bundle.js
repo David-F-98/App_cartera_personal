@@ -3694,6 +3694,26 @@ const cargarGastos = ()=>{
     }
 };
 
+const cargarTotalGastado = ()=>{
+    const contenedorTotalGastado = document.getElementById('total-gastado');
+    const gastos = JSON.parse(window.localStorage.getItem('gastos'));
+    let total = 0;
+
+    if(gastos){
+        const gastosDelMes = gastos.filter((gasto)=>{
+            if(isThisMonth(parseISO(gasto.fecha))){
+
+                return gasto;
+            }        });
+        if(gastosDelMes){
+            gastosDelMes.forEach((gasto) => {
+                total += parseFloat(gasto.precio);
+            });
+        }        const formatoMoneda = new Intl.NumberFormat('en-CO', {style: 'currency', currency: 'COP'});
+        const precio = formatoMoneda.format(total);
+        contenedorTotalGastado.innerText = precio;
+    }};
+
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
@@ -3858,7 +3878,9 @@ formulario.addEventListener('submit',(e)=>{
         precio.value='';
         cargarGastos();
         cerrarFormularioDesdeGastos();
+        cargarTotalGastado();
     }});
 
 cargarGastos();
+cargarTotalGastado();
 //# sourceMappingURL=bundle.js.map
