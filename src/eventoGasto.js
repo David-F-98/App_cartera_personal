@@ -1,5 +1,6 @@
-import { stringify } from "uuid";
-import { abrirFormularioDesdeGastos } from "./eventoBtnFormularioGastos";
+import cargarGastos from "./cargarGastos";
+import cargarTotalGastado from "./cargarTotalGastado";
+import { abrirFormularioDesdeGastos, cerrarFormularioDesdeGastos } from "./eventoBtnFormularioGastos";
 
 const contenedorGastos = document.getElementById('gastos');
 
@@ -46,5 +47,24 @@ contenedorGastos.addEventListener('click', (e)=>{
             abrirFormularioDesdeGastos('editarGasto');
         };
 
+    };
+
+
+    if(e.target.closest('[data-accion="eliminar-gasto"]')){
+        const id = gasto.dataset.id;
+        
+        const gastosGuardados = JSON.parse(window.localStorage.getItem('gastos'));
+
+        if(gastosGuardados){
+            const nuevosGastos = gastosGuardados.filter((gasto)=>{
+                if(gasto.id !== id){
+                    return gasto;
+                };
+            });
+            window.localStorage.setItem('gastos',JSON.stringify(nuevosGastos));
+        };
+
+        cargarGastos();
+        cargarTotalGastado();
     };
 })
