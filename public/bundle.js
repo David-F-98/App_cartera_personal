@@ -3,9 +3,23 @@
 const formulario$1 =  document.getElementById('formulario-gasto');
 const botonFormulario =  document.getElementById('toggle-form-gasto');
 
-const abrirFormularioDesdeGastos = ()=>{
+const abrirFormularioDesdeGastos = (modo = 'agregarGasto')=>{
     botonFormulario.classList.add('agregar-gasto__btn--active');
     formulario$1.classList.add('formulario-gasto--active');
+
+    
+    if(modo === 'editarGasto'){
+        document.querySelector('.formulario-gasto__btn').innerText = 'Editar Gasto';
+        document.querySelector('.formulario-gasto__titulo').innerText = 'Editar Gasto';
+        document.getElementById('formulario-gasto').dataset.modo = modo;
+    } else {  
+        document.querySelector('.formulario-gasto__btn').innerText = 'Agregar Gasto';
+        document.querySelector('.formulario-gasto__titulo').innerText = 'Agregar Gasto';
+        document.getElementById('formulario-gasto').dataset.modo = modo;
+        document.getElementById('descripcion').value = '';
+        document.getElementById('precio').value = '';
+        
+    }
 };
 
 const cerrarFormularioDesdeGastos = ()=>{
@@ -3920,7 +3934,7 @@ contenedorGastos.addEventListener('click', (e)=>{
             document.querySelector('#formulario-gasto #descripcion').value = descripcion;
             document.querySelector('#formulario-gasto #precio').value = precio;
             document.querySelector('#formulario-gasto').dataset.id = id;
-            abrirFormularioDesdeGastos();
+            abrirFormularioDesdeGastos('editarGasto');
         }
     }});
 

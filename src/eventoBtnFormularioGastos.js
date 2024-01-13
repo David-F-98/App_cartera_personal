@@ -1,9 +1,23 @@
 const formulario =  document.getElementById('formulario-gasto');
 const botonFormulario =  document.getElementById('toggle-form-gasto');
 
-const abrirFormularioDesdeGastos = ()=>{
+const abrirFormularioDesdeGastos = (modo = 'agregarGasto')=>{
     botonFormulario.classList.add('agregar-gasto__btn--active');
     formulario.classList.add('formulario-gasto--active');
+
+    
+    if(modo === 'editarGasto'){
+        document.querySelector('.formulario-gasto__btn').innerText = 'Editar Gasto';
+        document.querySelector('.formulario-gasto__titulo').innerText = 'Editar Gasto';
+        document.getElementById('formulario-gasto').dataset.modo = modo;
+    } else{  
+        document.querySelector('.formulario-gasto__btn').innerText = 'Agregar Gasto';
+        document.querySelector('.formulario-gasto__titulo').innerText = 'Agregar Gasto';
+        document.getElementById('formulario-gasto').dataset.modo = modo;
+        document.getElementById('descripcion').value = '';
+        document.getElementById('precio').value = '';
+        
+    }
 };
 
 const cerrarFormularioDesdeGastos = ()=>{
